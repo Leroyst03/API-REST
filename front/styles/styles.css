@@ -1,0 +1,77 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa; /* Fondo más claro para mejor contraste */
+  margin: 0; /* Elimina espacios innecesarios */
+  padding: 20px; /* Espaciado uniforme alrededor */
+  line-height: 1.6; /* Mejora la legibilidad */
+  color: #333; /* Color base más oscuro para el texto */
+}
+
+h1 {
+  color: #2c3e50; /* Color más sofisticado */
+  text-align: center;
+  font-size: 2.5rem; /* Tamaño más grande para títulos */
+  margin-bottom: 1.5rem; /* Separación adecuada */
+}
+
+form {
+  background-color: #ffffff;
+  border: 1px solid #e1e4e8; /* Color más suave para bordes */
+  border-radius: 10px; /* Bordes ligeramente más redondeados */
+  padding: 25px; /* Espaciado más generoso */
+  margin: 0 auto;
+  max-width: 600px; /* Mayor ancho para pantallas grandes */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombras más suaves */
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 1.1rem; /* Tamaño más grande para etiquetas */
+  color: #555; /* Color accesible */
+}
+
+input,
+textarea,
+button {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem; /* Más cómodo para usuarios móviles */
+  border: 1px solid #d0d7de;
+  border-radius: 5px; /* Ajuste visual más amigable */
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: vertical; /* Permite ajustar solo la altura */
+  min-height: 100px; /* Altura mínima para comodidad */
+}
+
+input:focus,
+textarea:focus {
+  border-color: #1f78b4; /* Azul accesible */
+  outline: none;
+  box-shadow: 0 0 8px rgba(31, 120, 180, 0.5); /* Sombras de enfoque más sutiles */
+}
+
+button {
+  background-color: #007bff; /* Azul más vivo */
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem; /* Tamaño más cómodo */
+  padding: 0.75rem;
+  border-radius: 6px; /* Bordes más redondeados */
+  transition: all 0.3s ease; /* Animaciones más fluidas */
+}
+
+button:hover {
+  background-color: #0056b3; /* Azul más oscuro en hover */
+}
+
+button:active {
+  transform: scale(0.96); /* Efecto más pronunciado */
+}

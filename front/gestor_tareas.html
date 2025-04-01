@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Tarea</title>
+    <link rel="stylesheet" href="/front/styles/styles.css">
+</head>
+<body>
+    <h1>Eliminar Tarea</h1>
+    <form id="formulario-eliminar">
+        <label for="nombre-tarea">Nombre de la Tarea:</label>
+        <input type="text" id="nombre-tarea" placeholder="Escribe el nombre de la tarea" required>
+
+        <label for="fecha-vencimiento">Fecha de Vencimiento:</label>
+        <input type="date" id="fecha-vencimiento" required>
+
+        <button type="submit">Eliminar Tarea</button>
+    </form>
+
+    <!-- Botón para ir a la página de actualizar tarea -->
+    <button id="actualizar-tarea">Actualizar Tarea</button>
+
+    <script>
+        const formulario = document.getElementById('formulario-eliminar');
+        formulario.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nombreTarea = document.getElementById('nombre-tarea').value;
+            const fechaVencimiento = document.getElementById('fecha-vencimiento').value;
+
+            if (!nombreTarea || !fechaVencimiento) {
+                alert('Por favor, completa todos los campos del formulario.');
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(`http://localhost:3000/tareas`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: nombreTarea,
+                        date: fechaVencimiento
+                    })
+                });
+
+                if (respuesta.ok) {
+                    alert('Tarea eliminada correctamente.');
+                } else {
+                    const errorMensaje = await respuesta.text();
+                    alert('Error al eliminar la tarea: ' + errorMensaje);
+                }
+            } catch (error) {
+                console.error('Error de red o servidor:', error);
+                alert('No se pudo conectar con el servidor.');
+            }
+        });
+
+        // EventListener para el botón de actualizar tarea
+        document.getElementById('actualizar-tarea').addEventListener('click', () => {
+            window.location.href = 'actualizar_tarea.html'; // Cambiar al archivo de actualización
+        });
+    </script>
+</body>
+</html>

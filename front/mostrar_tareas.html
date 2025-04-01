@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tareas</title>
+  <link rel="stylesheet" href="/front/styles/mostrar_styles.css"> <!-- Verifica la ruta del archivo de estilos -->
+</head>
+<body>
+  <h1>Lista de Tareas Guardadas</h1>
+  <table id="tabla-tareas">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Fecha de Vencimiento</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Las tareas se cargarán aquí dinámicamente -->
+    </tbody>
+  </table>
+
+  <script>
+    const cargarTareas = async () => {
+      try {
+        console.log('Iniciando la solicitud para obtener las tareas...');
+
+        // Solicitud al backend
+        const respuesta = await fetch('http://localhost:3000/tareas', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        // Verifica si la respuesta es correcta
+        if (!respuesta.ok) {
+          console.error('Error al obtener las tareas:', respuesta.status, respuesta.statusText);
+          alert('Error al obtener las tareas: ' + respuesta.statusText);
+          return; // Detiene la ejecución si hay un error
+        }
+
+        // Procesa los datos recibidos del servidor
+        const tareas = await respuesta.json();
+        console.log('Tareas recibidas:', tareas); // Mostrar las tareas en la consola
+
+        // Selecciona el cuerpo de la tabla
+        const tablaCuerpo = document.querySelector('#tabla-tareas tbody');
+        tablaCuerpo.innerHTML = ''; // Limpia la tabla antes de agregar las tareas
+
+        // Itera sobre las tareas y agrega filas
+        if (tareas.length > 0) {
+          tareas.forEach((tarea) => {
+            // Accede a los datos dentro del sub-objeto `data`
+            const { name, description, date } = tarea.data || {};
+
+            const fila = document.createElement('tr');
+
+            // Crea las celdas para cada propiedad de la tarea
+            const nombreCelda = document.createElement('td');
+            nombreCelda.textContent = name || 'Sin nombre';
+
+            const descripcionCelda = document.createElement('td');
+            descripcionCelda.textContent = description || 'Sin descripción';
+
+            const fechaCelda = document.createElement('td');
+            fechaCelda.textContent = date || 'Sin fecha';
+
+            // Agrega las celdas a la fila
+            fila.appendChild(nombreCelda);
+            fila.appendChild(descripcionCelda);
+            fila.appendChild(fechaCelda);
+
+            // Agrega la fila al cuerpo de la tabla
+            tablaCuerpo.appendChild(fila);
+          });
+        } else {
+          // Maneja el caso en que no haya tareas
+          const filaVacia = document.createElement('tr');
+          const celdaVacia = document.createElement('td');
+          celdaVacia.setAttribute('colspan', 3);
+          celdaVacia.textContent = 'No se encontraron tareas.';
+          filaVacia.appendChild(celdaVacia);
+          tablaCuerpo.appendChild(filaVacia);
+        }
+      } catch (error) {
+        // Manejo de errores de red o conexión
+        console.error('Error de red o servidor:', error);
+        alert('No se pudo conectar con el servidor. Revisa la consola para más detalles.');
+      }
+    };
+
+    // Llama a cargarTareas cuando la página esté lista
+    window.addEventListener('DOMContentLoaded', cargarTareas);
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Tarea</title>
+    <link rel="stylesheet" href="/front/styles/styles.css">
+</head>
+<body>
+    <h1>Actualizar Tarea</h1>
+    <form id="formulario-actualizar">
+        <label for="nombre-tarea">Nombre de la Tarea:</label>
+        <input type="text" id="nombre-tarea" placeholder="Escribe el nombre de la tarea" required>
+
+        <label for="nueva-fecha">Nueva Fecha de Vencimiento:</label>
+        <input type="date" id="nueva-fecha" required>
+
+        <button type="submit">Actualizar Tarea</button>
+    </form>
+
+    <script>
+        const formulario = document.getElementById('formulario-actualizar');
+        formulario.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevenir el comportamiento por defecto del formulario
+
+            // Capturar los valores del formulario
+            const nombreTarea = document.getElementById('nombre-tarea').value;
+            const nuevaFecha = document.getElementById('nueva-fecha').value;
+
+            // Validar que los campos no estén vacíos
+            if (!nombreTarea || !nuevaFecha) {
+                alert('Por favor, completa todos los campos del formulario.');
+                return;
+            }
+
+            try {
+                // Enviar los datos al servidor usando fetch
+                const respuesta = await fetch(`http://localhost:3000/tareas`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: nombreTarea,
+                        newDate: nuevaFecha
+                    }) // Convierte los datos a JSON
+                });
+
+                // Manejar la respuesta del servidor
+                if (respuesta.ok) {
+                    alert('Tarea actualizada correctamente.');
+                } else {
+                    const errorMensaje = await respuesta.text();
+                    alert('Error al actualizar la tarea: ' + errorMensaje);
+                }
+            } catch (error) {
+                console.error('Error de red o servidor:', error);
+                alert('No se pudo conectar con el servidor.');
+            }
+        });
+    </script>
+</body>
+</html>

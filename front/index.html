@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de Tareas</title>
+  <link rel="stylesheet" href="/front/styles/styles.css">
+</head>
+<body>
+  <h1>Gestor de Tareas</h1>
+  <form id="formulario-tareas">
+    <label for="nombre-tarea">Nombre de la Tarea:</label>
+    <input type="text" id="nombre-tarea" placeholder="Escribe el nombre de la tarea" required>
+
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" placeholder="Escribe una breve descripción..." rows="4" required></textarea>
+
+    <label for="fecha-vencimiento">Fecha de Vencimiento:</label>
+    <input type="date" id="fecha-vencimiento" required>
+
+    <button type="submit">Guardar Tarea</button>
+  </form>
+
+  <div class="botones-navegacion">
+    <!-- Botón para ir a la página de gestionar tareas -->
+    <button id="gestor-tareas">Ir a Gestor de Tareas</button>
+
+    <!-- Botón para ir a la página de mostrar tareas -->
+    <button id="mostrar-tareas">Mostrar Tareas</button>
+  </div>
+
+  <script>
+    const formulario = document.getElementById('formulario-tareas');
+
+    formulario.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nombreTarea = document.getElementById('nombre-tarea').value;
+      const descripcion = document.getElementById('descripcion').value;
+      const fechaVencimiento = document.getElementById('fecha-vencimiento').value;
+
+      if (!nombreTarea || !descripcion || !fechaVencimiento) {
+        alert('Por favor, completa todos los campos del formulario.');
+        return;
+      }
+
+      const datos = { name: nombreTarea, description: descripcion, date: fechaVencimiento };
+
+      try {
+        const respuesta = await fetch('http://localhost:3000/tareas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datos),
+        });
+
+        const resultado = await respuesta.json();
+        if (respuesta.ok) {
+          alert('Tarea guardada correctamente: ' + resultado.message);
+        } else {
+          alert('Error al guardar la tarea: ' + resultado.message);
+        }
+      } catch (error) {
+        console.error('Error de red o servidor:', error);
+        alert('No se pudo conectar con el servidor.');
+      }
+    });
+
+    // Botón que redirige a la página para gestionar tareas
+    document.getElementById('gestor-tareas').addEventListener('click', () => {
+      window.location.href = 'gestor_tareas.html';
+    });
+
+    // Botón que redirige a la página para mostrar tareas
+    document.getElementById('mostrar-tareas').addEventListener('click', () => {
+      window.location.href = 'mostrar_tareas.html';
+    });
+  </script>
+</body>
+</html>
